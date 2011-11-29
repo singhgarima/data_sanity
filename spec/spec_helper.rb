@@ -1,9 +1,10 @@
-require 'rubygems'
-require 'bundler/setup'
+require 'data_sanity/inspector'
 
-Dir["../lib/data_sanity/**/*.rb"].each { |file| require file }
+Dir['./spec/support/**/*'].each {|f| require f}
 
-
-RSpec.configure do |config|
-  # some (optional) config here
+RSpec::configure do |config|
+  config.color_enabled = true
+  config.filter_run :focused => true
+  config.run_all_when_everything_filtered = true
 end
+
