@@ -2,12 +2,12 @@
 
 It is a gem with following options to check sanity of database
 
-All data in all models
-Random data in all models :
-* specify n number of random records,
-* specify criteria
+# All data in all models
+# Random data in all models :
+    * specify n number of random records,
+    * specify criteria
 
-It would output result in a table with following details
+# It would output result in a table with following details
 
 +----+------------+-------------+-------------------+-----------------------+
 | id | table_name | primary_key	| primary_key_value | errors                |
