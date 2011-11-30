@@ -1,6 +1,5 @@
 require 'data_sanity/inspector'
-
-Dir['./spec/support/**/*'].each {|f| require f}
+require 'support/sample_app/config/environment'
 
 RSpec::configure do |config|
   config.color_enabled = true
