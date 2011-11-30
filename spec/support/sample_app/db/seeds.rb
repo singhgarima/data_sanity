@@ -5,3 +5,8 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
+
+Person.new(:name => "Abc", :age => 26).save(:validate => false)
+Person.new(:age => 7).save(:validate => false)
+Person.new(:name => "Abc", :age => 66).save(:validate => false)
+Person.new(:name => "Abc", :age => 66).save(:validate => false)
