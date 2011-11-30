@@ -6,11 +6,12 @@ describe "DataSanity::Inspector" do
     it "should set all switch as default options and populate all models of the applications" do
       inspector = DataSanity::Inspector.new
       inspector.all.should be_true
-      inspector.models.should == []
+      inspector.models.should == ["Person"]
     end
   end
   
   describe "investigate" do
+
   end
 
 end
