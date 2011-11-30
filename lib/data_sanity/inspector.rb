@@ -13,7 +13,8 @@ module DataSanity
     private
 
     def load_models
-      []
+      Dir["spec/support/sample_app/app/models/**/*.rb"].each { |file_path| require file_path rescue nil }
+      ActiveRecord::Base.descendants.select(&:descends_from_active_record?).collect(&:name)
     end
   end
 end
