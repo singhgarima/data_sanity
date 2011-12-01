@@ -17,5 +17,4 @@ def setup_data_inspector
     system "rake db:data_sanity:migrate"
     system "rake db:migrate"
   end
-  require "#{Rails.root}/app/models/data_inspector"
 end
