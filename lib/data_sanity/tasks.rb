@@ -3,7 +3,7 @@ namespace :db do
     desc 'Create data inspector model for data sanity results'
     task :migrate => :environment do
       Dir.chdir("#{Rails.root}") do
-        system "rails g model DataInspector table_name:string primary_key:string primary_key_value:string errors:text"
+        system "rails g model DataInspector table_name:string table_primary_key:string primary_key_value:string validation_errors:text"
       end
     end
 
