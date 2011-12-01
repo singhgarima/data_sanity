@@ -9,7 +9,11 @@ module DataSanity
       options[:validate] == :random ? @random = true : @all = true
       @models = load_models
     end
-    
+
+    def investigate
+      
+    end
+
     private
 
     def load_models
