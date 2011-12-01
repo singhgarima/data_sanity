@@ -11,7 +11,17 @@ module DataSanity
     end
 
     def investigate
-      
+      @models.each do |model_string|
+        model = model_string.constantize
+        model.all.each do |instance|
+          unless instance.valid?
+            DataInspector.create(:table_name => model_string,
+                                 :table_primary_key => model.primary_key,
+                                 :primary_key_value => instance.send(model.primary_key),
+                                 :validation_errors => instance.errors.full_messages.to_yaml)
+          end
+        end
+      end
     end
 
     private
