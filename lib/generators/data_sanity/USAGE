@@ -1,8 +1,0 @@
-Description:
-    Explain the generator
-
-Example:
-    rails generate data_sanity Thing
-
-    This will create:
-        what/will/it/create
