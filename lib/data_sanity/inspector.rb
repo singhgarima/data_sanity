@@ -28,7 +28,9 @@ module DataSanity
 
     def load_models
       Dir["#{Rails.root}/app/models/**/*.rb"].each { |file_path| require file_path rescue nil }
-      ActiveRecord::Base.descendants.select(&:descends_from_active_record?).collect(&:name)
+      all_models = ActiveRecord::Base.descendants.select(&:descends_from_active_record?)
+      all_models.delete(DataInspector)
+      all_models.collect(&:name)
     end
   end
 end
