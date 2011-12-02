@@ -1,7 +1,7 @@
 def clean_data_inspector_migration
   Dir.chdir("#{Rails.root}") do
     system "rake db:rollback"
-    system "rake db:data_sanity:rollback"
+    system "rake data_sanity:db:rollback"
   end
 end
 
@@ -14,7 +14,27 @@ end
 
 def setup_data_inspector
   Dir.chdir("#{Rails.root}") do
-    system "rake db:data_sanity:migrate"
+    system "rake data_sanity:db:migrate"
     system "rake db:migrate"
   end
+end
+
+def setup_data_sanity_criteria
+  Dir.chdir("#{Rails.root}") do
+    system "rake data_sanity:criteria"
+    file = File.open("config/data_sanity_criteria.yml", "w")
+    file << template_yml
+    file.close
+  end
+end
+
+def cleanup_data_sanity_criteria
+  Dir.chdir("#{Rails.root}") do
+    system "rm config/data_sanity_criteria.yml"
+  end
+end
+
+def template_yml
+  "Person:
+  name: ['Raju', 'Saju']"
 end

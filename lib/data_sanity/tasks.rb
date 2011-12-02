@@ -1,5 +1,5 @@
-namespace :db do
-  namespace :data_sanity do
+namespace :data_sanity do
+  namespace :db do
     desc 'Create data inspector model for data sanity results'
     task :migrate => :environment do
       Dir.chdir("#{Rails.root}") do
@@ -14,6 +14,13 @@ namespace :db do
         system "rails destroy migration add_columns_to_data_inspector"
         system "rails destroy migration create_data_inspector"
       end
+    end
+  end
+
+  desc 'Creating a sample criteria file'
+  task :citeria do
+    Dir.chdir("#{Rails.root}") do
+      system "cp #{File.open('./templates/data_sanity_criteria.yml').read} config/."
     end
   end
 end
