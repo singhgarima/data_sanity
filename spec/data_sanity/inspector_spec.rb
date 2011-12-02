@@ -60,13 +60,34 @@ describe "DataSanity::Inspector" do
       it "should check for errors on the model and populate fields in DataInspector" do
         inspector = DataSanity::Inspector.new(:validate => :random, :records_per_model => 2)
 
-        Person.new(:name => "Valid-Record").save(:validate => false)
+        Person.new(:name => "InValid-Record").save(:validate => false)
         Person.new(:name => "UnderAge", :age => 1).save(:validate => false)
         Person.new(:age => 20).save(:validate => false)
         Person.new(:age => 1).save(:validate => false)
 
         inspector.investigate
         DataInspector.count.should == 2
+      end
+
+      describe "criteria" do
+        before :each do
+          setup_data_sanity_criteria
+        end
+
+        it "should check for errors on model based on criteria picked from data_sanity_criteria.yml" do
+          inspector = DataSanity::Inspector.new(:validate => :random)
+
+          2.times { Person.new(:name => "Raju").save(:validate => false) }
+          2.times { Person.new(:name => "Saju").save(:validate => false) }
+          Person.new(:age => 20).save(:validate => false)
+
+          inspector.investigate
+          DataInspector.count.should == 2
+        end
+
+        after :each do
+          cleanup_data_sanity_criteria
+        end
       end
     end
 
