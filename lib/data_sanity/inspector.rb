@@ -34,6 +34,7 @@ module DataSanity
 
     def validate_random(model)
       no_of_records = model.count
+      return if no_of_records == 0
       @records_per_model.times do
         instance = model.offset(rand(no_of_records)).first
         populate_if_invalid_record(instance, model)
