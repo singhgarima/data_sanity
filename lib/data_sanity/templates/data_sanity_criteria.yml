@@ -2,9 +2,6 @@
 # This is a sample criteria.
 # Start with Model Name and
 #<Model Name>:    # Criteria-Rule to be applied
-#  <field name>:  # Anthing mentioned is considered for validations against mentioned below distinct values
-#    - 'Raju'     # Various values field can take
-#    - 'Saju'
-#    - 'Taju'
-#  <age>          # Anthing mentioned is considered for validations against all possible distinct values
+#  <field name>: ['Raju', 'kaju', 'Taju']  # Field is considered for validations against distinct values in array
+#  <age>                                   # Field is considered for validations against all possible distinct values
 ############################################
