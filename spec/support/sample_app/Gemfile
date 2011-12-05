@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.6'
+gem 'rake', '0.8.7'
 gem 'sqlite3'
 gem 'data_sanity', :path => "~/data_sanity"

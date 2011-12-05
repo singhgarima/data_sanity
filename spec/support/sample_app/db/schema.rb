@@ -10,22 +10,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111205065701) do
+ActiveRecord::Schema.define(:version => 20111205042538) do
 
   create_table "cars", :force => true do |t|
     t.string   "name"
     t.string   "make"
     t.string   "color"
     t.integer  "person_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "data_inspectors", :force => true do |t|
-    t.string   "table_name"
-    t.string   "table_primary_key"
-    t.string   "primary_key_value"
-    t.text     "validation_errors"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
