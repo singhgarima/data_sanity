@@ -35,7 +35,7 @@ module DataSanity
     def validate_random(model)
       no_of_records = model.count
       return if no_of_records == 0
-      @records_per_model.times do
+      @records_per_model.to_i.times do
         instance = model.offset(rand(no_of_records)).first
         populate_if_invalid_record(instance, model)
       end
@@ -64,9 +64,9 @@ module DataSanity
 
     def load_models
       Dir["#{Rails.root}/app/models/**/*.rb"].each { |file_path| require file_path rescue nil }
-      all_models = ActiveRecord::Base.descendants.select(&:descends_from_active_record?)
-      all_models.delete(DataInspector)
-      all_models.collect(&:name)
+      all_models = ActiveRecord::Base.descendants.select(&:descends_from_active_record?).collect(&:name)
+      all_models.delete("DataInspector")
+      all_models
     end
 
   end
