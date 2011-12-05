@@ -11,14 +11,14 @@ describe "DataSanity::Inspector" do
     end
 
     it "should set random switch, populate default records_per_model and populate all models of the applications" do
-      inspector = DataSanity::Inspector.new :validate => :random
+      inspector = DataSanity::Inspector.new :validate => "random"
       inspector.random.should be_true
       inspector.records_per_model.should == 1
       inspector.models.should == ["Car", "Person"]
     end
 
     it "should set random switch, populate records_per_model and populate all models of the applications" do
-      inspector = DataSanity::Inspector.new :validate => :random, :records_per_model => 5
+      inspector = DataSanity::Inspector.new :validate => "random", :records_per_model => 5
       inspector.random.should be_true
       inspector.records_per_model.should == 5
       inspector.models.should == ["Car", "Person"]
@@ -58,13 +58,13 @@ describe "DataSanity::Inspector" do
 
     describe "random" do
       it "should check for models with no data" do
-        inspector = DataSanity::Inspector.new :validate => :random
+        inspector = DataSanity::Inspector.new :validate => "random"
         inspector.investigate
         DataInspector.count.should == 0
       end
 
       it "should check for errors on the model and populate fields in DataInspector" do
-        inspector = DataSanity::Inspector.new(:validate => :random, :records_per_model => 2)
+        inspector = DataSanity::Inspector.new(:validate => "random", :records_per_model => 2)
 
         Person.new(:name => "InValid-Record").save(:validate => false)
         Person.new(:name => "UnderAge", :age => 1).save(:validate => false)
@@ -81,13 +81,13 @@ describe "DataSanity::Inspector" do
         end
 
         it "should check for models with no data" do
-          inspector = DataSanity::Inspector.new :validate => :random
+          inspector = DataSanity::Inspector.new :validate => "random"
           inspector.investigate
           DataInspector.count.should == 0
         end
 
         it "should check for errors on model based on criteria picked from data_sanity_criteria.yml" do
-          inspector = DataSanity::Inspector.new(:validate => :random)
+          inspector = DataSanity::Inspector.new(:validate => "random")
 
           2.times { Person.new(:name => "Raju").save(:validate => false) }
           2.times { Person.new(:name => "Saju").save(:validate => false) }
@@ -103,7 +103,7 @@ describe "DataSanity::Inspector" do
 
         it "should check all distinct values of field for which a criteria exists" do
           update_data_sanity_criteria("Car:\n  make")
-          inspector = DataSanity::Inspector.new(:validate => :random)
+          inspector = DataSanity::Inspector.new(:validate => "random")
 
           5.times { |i| Car.new(:name => "Car Name#{i}", :make => "Brand1").save(:validate => false) }
           5.times { |i| Car.new(:name => "Car Name#{i}", :make => "Brand2").save(:validate => false) }

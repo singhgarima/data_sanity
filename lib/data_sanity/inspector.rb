@@ -6,7 +6,7 @@ module DataSanity
     attr_accessor :all, :random, :criteria, :models, :records_per_model
 
     def initialize options = {}
-      options[:validate] == :random ? @random = true : @all = true
+      options[:validate] == "random" ? @random = true : @all = true
       @records_per_model = options[:records_per_model] || CONSIDERED_RECORDS
       @models = load_models
       file_path = "#{Rails.root}/config/data_sanity_criteria.yml"
