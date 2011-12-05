@@ -75,6 +75,15 @@ describe "DataSanity::Inspector" do
         DataInspector.count.should == 2
       end
 
+      it "should select minimum of records_per_model and records matching a criteria" do
+        inspector = DataSanity::Inspector.new(:validate => "random", :records_per_model => 20)
+
+        Person.new(:name => "InValid-Record").save(:validate => false)
+
+        inspector.investigate
+        DataInspector.count.should == 1
+      end
+
       describe "criteria" do
         before :each do
           setup_data_sanity_criteria
@@ -102,7 +111,7 @@ describe "DataSanity::Inspector" do
         end
 
         it "should check all distinct values of field for which a criteria exists" do
-          update_data_sanity_criteria("Car:\n  make")
+          update_data_sanity_criteria(criteria_car_make)
           inspector = DataSanity::Inspector.new(:validate => "random")
 
           5.times { |i| Car.new(:name => "Car Name#{i}", :make => "Brand1").save(:validate => false) }
@@ -116,6 +125,32 @@ describe "DataSanity::Inspector" do
           Car.find(DataInspector.last.primary_key_value).make.should == "Brand2"
         end
 
+        it "should check all distinct values of field for which a criteria exists" do
+          update_data_sanity_criteria(criteria_car_make)
+          inspector = DataSanity::Inspector.new(:validate => "random", :records_per_model => "2")
+
+          5.times { |i| Car.new(:name => "Car Name#{i}", :make => "Brand1").save(:validate => false) }
+          5.times { |i| Car.new(:name => "Car Name#{i}", :make => "Brand2").save(:validate => false) }
+
+          inspector.investigate
+
+          DataInspector.count.should == 4
+          DataInspector.all.collect(&:table_name).should == ["Car", "Car", "Car", "Car"]
+          Car.find(DataInspector.all.collect(&:primary_key_value)).collect(&:make).should == ["Brand1", "Brand1", "Brand2", "Brand2"]
+        end
+
+        it "should select minimum of records_per_model and records matching a criteria" do
+          update_data_sanity_criteria(criteria_car_make)
+          inspector = DataSanity::Inspector.new(:validate => "random", :records_per_model => "15")
+
+          2.times { |i| Car.new(:name => "Car Name#{i}", :make => "Brand1").save(:validate => false) }
+          2.times { |i| Car.new(:name => "Car Name#{i}", :make => "Brand2").save(:validate => false) }
+
+          inspector.investigate
+
+          DataInspector.count.should == 4
+        end
+
         after :each do
           cleanup_data_sanity_criteria
         end
@@ -125,6 +160,11 @@ describe "DataSanity::Inspector" do
     after :each do
       clean_data_inspector_migration
     end
+  end
+
+  def criteria_car_make
+    "Car:
+  make"
   end
 
 end

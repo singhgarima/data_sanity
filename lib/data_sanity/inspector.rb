@@ -7,7 +7,7 @@ module DataSanity
 
     def initialize options = {}
       options[:validate] == "random" ? @random = true : @all = true
-      @records_per_model = options[:records_per_model] || CONSIDERED_RECORDS
+      @records_per_model = options[:records_per_model].to_i == 0 ? CONSIDERED_RECORDS : options[:records_per_model].to_i
       @models = load_models
       file_path = "#{Rails.root}/config/data_sanity_criteria.yml"
       @criteria = (File.exists?(file_path) ? (YAML.load File.open(file_path).read) : false) rescue false
@@ -35,7 +35,7 @@ module DataSanity
     def validate_random(model)
       no_of_records = model.count
       return if no_of_records == 0
-      @records_per_model.to_i.times do
+      [@records_per_model, no_of_records].min.times do
         instance = model.offset(rand(no_of_records)).first
         populate_if_invalid_record(instance, model)
       end
@@ -48,8 +48,10 @@ module DataSanity
           results = model.where(attribute.to_sym => value)
           count = results.count
           next if count == 0
-          instance = results.offset(rand(count)).first
-          populate_if_invalid_record(instance, model)
+          [@records_per_model, count].min.times do
+            instance = results.offset(rand(count)).first
+            populate_if_invalid_record(instance, model)
+          end
         end
       end
     end
