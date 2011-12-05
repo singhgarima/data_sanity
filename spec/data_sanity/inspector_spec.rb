@@ -30,13 +30,13 @@ describe "DataSanity::Inspector" do
       setup_data_inspector
     end
 
-    it "should check for errors on the model and populate fields in DataInspector" do
-      inspector = DataSanity::Inspector.new
-      inspector.investigate
-      DataInspector.count.should == 0
-    end
-
     describe "all" do
+
+      it "should check for models with no data" do
+        inspector = DataSanity::Inspector.new
+        inspector.investigate
+        DataInspector.count.should == 0
+      end
 
       it "should check for errors on the model and populate fields in DataInspector" do
         inspector = DataSanity::Inspector.new
@@ -57,6 +57,12 @@ describe "DataSanity::Inspector" do
     end
 
     describe "random" do
+      it "should check for models with no data" do
+        inspector = DataSanity::Inspector.new :validate => :random
+        inspector.investigate
+        DataInspector.count.should == 0
+      end
+
       it "should check for errors on the model and populate fields in DataInspector" do
         inspector = DataSanity::Inspector.new(:validate => :random, :records_per_model => 2)
 
@@ -72,6 +78,12 @@ describe "DataSanity::Inspector" do
       describe "criteria" do
         before :each do
           setup_data_sanity_criteria
+        end
+
+        it "should check for models with no data" do
+          inspector = DataSanity::Inspector.new :validate => :random
+          inspector.investigate
+          DataInspector.count.should == 0
         end
 
         it "should check for errors on model based on criteria picked from data_sanity_criteria.yml" do

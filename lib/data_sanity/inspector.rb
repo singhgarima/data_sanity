@@ -45,7 +45,9 @@ module DataSanity
       criteria.each do |attribute, values|
         values.each do |value|
           results = model.where(attribute.to_sym => value)
-          instance = results.offset(rand(results.count)).first
+          count = results.count
+          next if count == 0
+          instance = results.offset(rand(count)).first
           populate_if_invalid_record(instance, model)
         end
       end
