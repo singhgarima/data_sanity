@@ -93,11 +93,27 @@ describe "DataSanity::Inspector" do
           2.times { Person.new(:name => "Saju").save(:validate => false) }
           2.times { Car.new(:name => "Santro").save(:validate => false) }
           Person.new(:age => 20).save(:validate => false)
-          car = Car.new(:name => "800", :make => "Maruti", :color => "Black", :person => Person.first).save(:validate => false)
+          Car.new(:name => "800", :make => "Maruti", :color => "Black", :person => Person.first).save(:validate => false)
+          Car.new(:name => "Santro", :make => "HHH", :color => "NotAColor", :person => Person.last).save(:validate => false)
 
           inspector.investigate
           DataInspector.count.should == 3
           DataInspector.all.collect(&:table_name).should == ["Car", "Person", "Person"]
+        end
+
+        it "should check all distinct values of field for which a criteria exists" do
+          update_data_sanity_criteria("Car:\n  make")
+          inspector = DataSanity::Inspector.new(:validate => :random)
+
+          5.times { |i| Car.new(:name => "Car Name#{i}", :make => "Brand1").save(:validate => false) }
+          5.times { |i| Car.new(:name => "Car Name#{i}", :make => "Brand2").save(:validate => false) }
+
+          inspector.investigate
+
+          DataInspector.count.should == 2
+          DataInspector.all.collect(&:table_name).should == ["Car", "Car"]
+          Car.find(DataInspector.first.primary_key_value).make.should == "Brand1"
+          Car.find(DataInspector.last.primary_key_value).make.should == "Brand2"
         end
 
         after :each do
