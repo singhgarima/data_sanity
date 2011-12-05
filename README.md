@@ -7,11 +7,11 @@
 
 # It would output result in a table with following details
 
-+----+------------+-------------+-------------------+-----------------------+
-| id | table_name | primary_key	| primary_key_value | errors                |
-+----+------------+-------------+-------------------+-----------------------+
-| 1	 |  Person	  | person_id	| 128	            | “Fmno can’t be blank” |
-+----+------------+-------------+-------------------+-----------------------+
+    +----+------------+-------------+-------------------+-----------------------+
+    | id | table_name | primary_key	| primary_key_value | errors                |
+    +----+------------+-------------+-------------------+-----------------------+
+    | 1	 |  Person	  | person_id	| 128	            | “Fmno can’t be blank” |
+    +----+------------+-------------+-------------------+-----------------------+
 
 # HOW TO USE
     * adding migrations : rake data_sanity:db:migrate
