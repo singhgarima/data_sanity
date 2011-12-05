@@ -18,9 +18,9 @@ namespace :data_sanity do
   end
 
   desc 'Creating a sample criteria file'
-  task :citeria do
+  task :criteria do
     Dir.chdir("#{Rails.root}") do
-      system "cp #{File.open('./templates/data_sanity_criteria.yml').read} config/."
+      system "cp #{SOURCE_PATH}/data_sanity/templates/data_sanity_criteria.yml #{Rails.root}/config/."
     end
   end
 end

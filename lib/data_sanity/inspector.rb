@@ -10,7 +10,7 @@ module DataSanity
       @records_per_model = options[:records_per_model] || CONSIDERED_RECORDS
       @models = load_models
       file_path = "#{Rails.root}/config/data_sanity_criteria.yml"
-      @criteria = File.exists?(file_path) ? (YAML.load File.open(file_path).read) : false
+      @criteria = (File.exists?(file_path) ? (YAML.load File.open(file_path).read) : false) rescue false
     end
 
     def investigate
@@ -43,6 +43,7 @@ module DataSanity
 
     def validate_criteria(model, criteria)
       criteria.each do |attribute, values|
+        values = (model.select("DISTINCT(#{attribute})").collect(&attribute.to_sym)) if values.blank?
         values.each do |value|
           results = model.where(attribute.to_sym => value)
           count = results.count
