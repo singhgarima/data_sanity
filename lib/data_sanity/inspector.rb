@@ -61,7 +61,11 @@ module DataSanity
                            :table_primary_key => model.primary_key,
                            :primary_key_value => instance.send(model.primary_key),
                            :validation_errors => instance.errors.full_messages.to_yaml) unless instance.valid?
-
+    rescue Exception => exp
+      DataInspector.create(:table_name => model.to_s,
+                           :table_primary_key => model.primary_key,
+                           :primary_key_value => instance.send(model.primary_key),
+                           :validation_errors => exp.to_yaml)
     end
 
     def load_models
