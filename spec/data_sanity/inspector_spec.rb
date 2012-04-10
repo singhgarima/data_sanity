@@ -54,6 +54,21 @@ describe "DataSanity::Inspector" do
         DataInspector.first.primary_key_value.should == first_person.id.to_s
         YAML.load(DataInspector.first.validation_errors).should == first_person.errors.full_messages
       end
+      
+      it "should check for errors on the model and populate fields in DataInspector even if valid? raises exception" do
+        inspector = DataSanity::Inspector.new
+        
+        exception = Exception.new
+        
+        booming_mock = mock(:person)
+        booming_mock.should_receive(:valid?).and_raise(exception)
+        Person.should_receive(:all).and_return([booming_mock])
+
+        inspector.investigate
+        DataInspector.count.should == 1
+        
+        YAML.load(DataInspector.first.validation_errors).should_not be_blank
+      end
     end
 
     describe "random" do
