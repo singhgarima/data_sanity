@@ -14,12 +14,18 @@ module DataSanity
     end
 
     def investigate
-      @models.each do |model_string|
-        model = model_string.constantize
-        validate_all(model) if @all
-        if @random
-          validate_criteria(model, @criteria[model_string]) and return if @criteria && @criteria[model_string].present?
-          validate_random(model)
+      if @all
+        @models.each do |model_string|
+          model = model_string.constantize
+          validate_all(model) if @all
+        end
+      elsif @criteria
+        @criteria.keys.each do |model|
+          validate_criteria(model.constantize, @criteria[model])
+        end
+      else
+        @models.each do |model_string|
+          validate_random(model_string.constantize)
         end
       end
     end
