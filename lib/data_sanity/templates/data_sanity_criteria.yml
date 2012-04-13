@@ -4,4 +4,9 @@
 #<Model Name>:    # Criteria-Rule to be applied
 #  <field name>: ['Raju', 'kaju', 'Taju']  # Field is considered for validations against distinct values in array
 #  <age>:                                  # Field is considered for validations against all possible distinct values
+#
+#Note  Leave a blank line if you are just writing model namess
+#eg
+#<Model1>:
+#<Model2>:
 ############################################

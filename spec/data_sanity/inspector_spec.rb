@@ -201,8 +201,10 @@ describe "DataSanity::Inspector" do
   end
 
   def criteria_multiple
-    "Car:
-Person:"
+    "#test:
+Car:
+Person:
+"
   end
 
 end

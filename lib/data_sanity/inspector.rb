@@ -48,6 +48,7 @@ module DataSanity
     end
 
     def validate_criteria(model, criteria)
+      validate_random(model) and return if criteria.blank?
       criteria.each do |attribute, values|
         values = (model.select("DISTINCT(#{attribute})").collect(&attribute.to_sym)) if values.blank?
         values.each do |value|
