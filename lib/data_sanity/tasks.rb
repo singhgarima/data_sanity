@@ -6,7 +6,6 @@ namespace :data_sanity do
         command = "rails generate model DataInspector table_name:string table_primary_key:string primary_key_value:string validation_errors:text"
         log_command command
         system "#{command}"
-        
         command = "rake db:migrate"
         Rake::Task['db:migrate'].execute
       end
@@ -34,5 +33,5 @@ namespace :data_sanity do
 end
 
 def log_command command
-  puts "Running ==>" + command.to_s
+  puts "Running ==> " + command.to_s
 end
