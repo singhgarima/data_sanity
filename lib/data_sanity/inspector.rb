@@ -33,7 +33,7 @@ module DataSanity
     private
 
     def validate_all(model)
-      model.all.each do |instance|
+      model.find_each do |instance|
         populate_if_invalid_record(instance, model)
       end
     end

@@ -60,10 +60,9 @@ describe "DataSanity::Inspector" do
 
         exception = Exception.new
 
-        booming_mock = mock(:person)
-        booming_mock.should_receive(:valid?).and_raise(exception)
-        Person.should_receive(:all).and_return([booming_mock])
-
+        bombing_mock = mock(:person)
+        bombing_mock.should_receive(:valid?).and_raise(exception)
+        Person.should_receive(:find_each).and_yield(bombing_mock)
         inspector.investigate
         DataInspector.count.should == 1
 
@@ -204,7 +203,7 @@ describe "DataSanity::Inspector" do
     "#test:
 Car:
 Person:
-"
+    "
   end
 
 end
