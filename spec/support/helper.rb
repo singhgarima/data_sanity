@@ -15,7 +15,6 @@ end
 def setup_data_inspector
   Dir.chdir("#{Rails.root}") do
     system "rake data_sanity:db:migrate"
-    system "rake db:migrate"
   end
 end
 
