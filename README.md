@@ -1,3 +1,5 @@
+[![Build Status](https://secure.travis-ci.org/singhgarima/data_sanity.png)](http://travis-ci.org/singhgarima/data_sanity)
+
 # Data Sanity Inspector
     It is a gem with following options to check sanity of database
         # All data in all models
