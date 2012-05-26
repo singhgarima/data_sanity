@@ -15,9 +15,4 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version = DataSanity::VERSION
 
-  gem.add_dependency "rails", "=3.0.6"
-  gem.add_dependency "rake", "=0.8.7"
-
-  gem.add_development_dependency "rspec"
-  gem.add_development_dependency "sqlite3"
 end
