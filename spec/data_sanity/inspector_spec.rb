@@ -26,12 +26,7 @@ describe "DataSanity::Inspector" do
   end
 
   describe "investigate" do
-    before :each do
-      setup_data_inspector
-    end
-
     describe "all" do
-
       it "should check for models with no data" do
         inspector = DataSanity::Inspector.new
         inspector.investigate
@@ -141,7 +136,7 @@ describe "DataSanity::Inspector" do
 
         it "should check all distinct values of field for which a criteria exists" do
           update_data_sanity_criteria(criteria_car_make)
-          inspector = DataSanity::Inspector.new(:validate => "random", :records_per_model => "2")
+          inspector = DataSanity::Inspector.new(:validate => "random", :records_per_model => "1")
 
           Car.new(:name => "Car Name1", :make => "Brand1").save(:validate => false)
           Car.new(:name => "Car Name2", :make => "Brand2").save(:validate => false)
@@ -153,9 +148,9 @@ describe "DataSanity::Inspector" do
 
           inspector.investigate
 
-          DataInspector.count.should == 5
+          DataInspector.count.should == 3
           DataInspector.all.collect(&:table_name).uniq.should == ["Car"]
-          Car.find(DataInspector.all.collect(&:primary_key_value)).collect(&:make).sort.should == ["Brand1", "Brand1", "Brand2", "Brand2", "Brand3"]
+          Car.find(DataInspector.all.collect(&:primary_key_value)).collect(&:make).sort.should == ["Brand1", "Brand2", "Brand3"]
         end
 
         it "should select minimum of records_per_model and records matching a criteria" do
@@ -187,10 +182,6 @@ describe "DataSanity::Inspector" do
           cleanup_data_sanity_criteria
         end
       end
-    end
-
-    after :each do
-      clean_data_inspector_migration
     end
   end
 
