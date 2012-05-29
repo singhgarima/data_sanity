@@ -22,6 +22,8 @@
     * You can add a sample criteria file using rake data_sanity:criteria
     * To Investigate your data use rake data_sanity:investigate
         - By default it runs for all data
+            : If criteria file is specifies then picks model from file and validates only those
+            : Note: For any criteria mentioned except model names is ignored
         - rake data_sanity:investigate[random,2]
             : parameter 1: random: show you want random selection
             : parameter 2: lets you add as many random records you want to verify [default is 1]

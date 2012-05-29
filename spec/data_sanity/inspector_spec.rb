@@ -63,6 +63,29 @@ describe "DataSanity::Inspector" do
 
         YAML.load(DataInspector.first.validation_errors).should_not be_blank
       end
+
+      describe "criteria" do
+        before :each do
+          setup_data_sanity_criteria
+        end
+
+        it "should check for errors on model based on criteria models picked from data_sanity_criteria.yml, also ignores options under model" do
+          inspector = DataSanity::Inspector.new
+
+          2.times { Person.new(:name => "Raju").save(:validate => false) }
+          2.times { Person.new(:name => "Saju").save(:validate => false) }
+          2.times { Person.new(:name => "Also Taken").save(:validate => false) }
+          2.times { Car.new(:name => "Santro").save(:validate => false) }
+
+          inspector.investigate
+          DataInspector.count.should == 6
+          DataInspector.all.collect(&:table_name).uniq.should == ["Person"]
+        end
+
+        after :each do
+          cleanup_data_sanity_criteria
+        end
+      end
     end
 
     describe "random" do

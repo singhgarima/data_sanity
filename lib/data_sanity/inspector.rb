@@ -15,7 +15,8 @@ module DataSanity
 
     def investigate
       if @all
-        @models.each do |model_string|
+        considered_models = @criteria ? @criteria.keys : @models
+        considered_models.each do |model_string|
           model = model_string.constantize
           log_start(model)
           validate_all(model)
