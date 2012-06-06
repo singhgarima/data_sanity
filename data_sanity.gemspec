@@ -14,5 +14,5 @@ Gem::Specification.new do |gem|
   gem.name = "data_sanity"
   gem.require_paths = ["lib"]
   gem.version = DataSanity::VERSION
-
+  gem.license = 'MIT'
 end
