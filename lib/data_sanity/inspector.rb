@@ -3,9 +3,10 @@ module DataSanity
 
     CONSIDERED_RECORDS = 1
     ALLOWED_VALIDATION = [:all, :random, :criteria]
-    attr_accessor :all, :random, :criteria, :models, :records_per_model
+    attr_accessor :all, :random, :criteria, :models, :records_per_model, :output
 
     def initialize options = {}
+      @output = DataSanity::Output.new :option => ( options[:strategy] || :table ).to_sym
       options[:validate] == "random" ? @random = true : @all = true
       @records_per_model = options[:records_per_model].to_i == 0 ? CONSIDERED_RECORDS : options[:records_per_model].to_i
       @models = load_models
@@ -35,6 +36,7 @@ module DataSanity
           log_end(model_string)
         end
       end
+      @output.close
     end
 
     private
@@ -71,15 +73,9 @@ module DataSanity
     end
 
     def populate_if_invalid_record(instance, model)
-      DataInspector.create(:table_name => model.to_s,
-                           :table_primary_key => model.primary_key,
-                           :primary_key_value => instance.send(model.primary_key),
-                           :validation_errors => instance.errors.full_messages.to_yaml) unless instance.valid?
+      @output.create_from model, instance unless instance.valid?
     rescue Exception => exp
-      DataInspector.create(:table_name => model.to_s,
-                           :table_primary_key => model.primary_key,
-                           :primary_key_value => instance.send(model.primary_key),
-                           :validation_errors => exp.to_yaml)
+      @output.create_from model, instance, exp
     end
 
     def load_models

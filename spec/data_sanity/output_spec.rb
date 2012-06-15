@@ -38,8 +38,6 @@ describe "DataSanity::Output" do
       output.close
 
       path = "#{Rails.root}/tmp/data_inspector.csv"
-      contents = File.open(path) {|f| f.read }
-      contents.should_not be_nil
       FasterCSV.read(path).should == [["table_name", "table_primary_key", "primary_key_value", "validation_errors"], 
         ["model", "id", "2", "error1 and error2"]]
     end

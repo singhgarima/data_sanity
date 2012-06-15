@@ -26,8 +26,8 @@ namespace :data_sanity do
     end
   end
 
-  desc 'Data Sanity run investigation'
-  task :investigate, [:validate, :records_per_model] => :environment do |t, args|
+  desc 'Data Sanity run investigation - params[strategy,validate,records_per_model]'
+  task :investigate, [:strategy, :validate, :records_per_model] => :environment do |t, args|
     DataSanity::Inspector.new(args).investigate
   end
 end

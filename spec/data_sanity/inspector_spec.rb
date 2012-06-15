@@ -50,6 +50,20 @@ describe "DataSanity::Inspector" do
         YAML.load(DataInspector.first.validation_errors).should == first_person.errors.full_messages
       end
 
+      it "should check for errors on the model and populate fields in DataInspector" do
+        inspector = DataSanity::Inspector.new :strategy => :csv
+
+        Person.new(:age => 1).save(:validate => false)
+
+        inspector.investigate
+
+        first_person = Person.find_by_age(1)
+        first_person.valid?
+        path = "#{Rails.root}/tmp/data_inspector.csv"
+        FasterCSV.read(path).should == [["table_name", "table_primary_key", "primary_key_value", "validation_errors"], 
+          ["Person", "id", "#{first_person.id}", "#{first_person.errors.full_messages.to_sentence}"]]
+      end
+
       it "should check for errors on the model and populate fields in DataInspector even if valid? raises exception" do
         inspector = DataSanity::Inspector.new
 
