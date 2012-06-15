@@ -15,4 +15,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version = DataSanity::VERSION
   gem.license = 'MIT'
+
+  gem.add_dependency 'fastercsv', '1.5.5'
 end
