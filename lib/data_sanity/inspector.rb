@@ -19,21 +19,21 @@ module DataSanity
         considered_models = @criteria ? @criteria.keys : @models
         considered_models.each do |model_string|
           model = model_string.constantize
-          log_start(model)
+          @output.start_log model
           validate_all(model)
-          log_end(model)
+          @output.end_log
         end
       elsif @criteria
         @criteria.keys.each do |model|
-          log_start(model)
+          @output.start_log model
           validate_criteria(model.constantize, @criteria[model])
-          log_end(model)
+          @output.end_log
         end
       else
         @models.each do |model_string|
-          log_start(model_string)
+          @output.start_log model_string
           validate_random(model_string.constantize)
-          log_end(model_string)
+          @output.end_log
         end
       end
       @output.close
@@ -83,15 +83,6 @@ module DataSanity
       all_models = ActiveRecord::Base.descendants.select(&:descends_from_active_record?).collect(&:name)
       all_models.delete("DataInspector")
       all_models
-    end
-
-    def log_start model
-      puts "==> Inspecting :: " + model.to_s
-    end
-
-    def log_end model
-      validation_count = DataInspector.where(:table_name => model.to_s).count
-      puts "==> Inspection completed and found #{validation_count} validation(s) defaulters"
     end
 
   end
